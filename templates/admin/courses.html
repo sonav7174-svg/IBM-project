@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="space-y-6">
+  <div class="bg-white p-6 rounded shadow">
+    <h1 class="text-2xl font-bold mb-4">Manage Courses</h1>
+    <form method="POST" class="space-y-3">
+      <div class="grid md:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm mb-1">Course Name</label>
+          <input name="name" class="w-full border rounded px-3 py-2" required>
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Instructor</label>
+          <select name="instructor" class="w-full border rounded px-3 py-2" required>
+            <option value="">Select Instructor</option>
+            {% for ins in instructors %}
+              <option value="{{ ins.username }}">{{ ins.username }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm mb-1">Description</label>
+        <textarea name="description" placeholder="Course Description" rows="3" class="w-full border rounded px-3 py-2" required></textarea>
+      </div>
+
+      <div>
+        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Course</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="bg-white p-6 rounded shadow">
+    <h2 class="text-lg font-semibold mb-3">All Courses</h2>
+    {% if courses %}
+      <table class="w-full border text-sm">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="border px-3 py-2 text-left">ID</th>
+            <th class="border px-3 py-2 text-left">Name</th>
+            <th class="border px-3 py-2 text-left">Instructor</th>
+            <th class="border px-3 py-2 text-left">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in courses %}
+            <tr>
+              <td class="border px-3 py-2">{{ c.id }}</td>
+              <td class="border px-3 py-2">{{ c.name }}</td>
+              <td class="border px-3 py-2">{{ c.instructor }}</td>
+              <td class="border px-3 py-2">{{ c.description }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="text-gray-600">No courses created yet.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

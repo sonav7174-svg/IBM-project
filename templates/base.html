@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EdTech App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <nav class="bg-blue-600 text-white">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="{{ url_for('courses_list') }}" class="font-bold">EdTech</a>
+      <div class="space-x-3 text-sm">
+        {% if session.get('user_id') %}
+          <span class="bg-blue-700 px-2 py-1 rounded">{{ session.get('username') }} ({{ session.get('role') }})</span>
+          {% if session.get('role') == 'user' %}
+            <a href="{{ url_for('my_courses') }}" class="hover:underline">My Courses</a>
+          {% elif session.get('role') == 'instructor' %}
+            <a href="{{ url_for('instructor_dashboard') }}" class="hover:underline">Instructor Dashboard</a>
+          {% elif session.get('role') == 'admin' %}
+            <a href="{{ url_for('admin_dashboard') }}" class="hover:underline">Admin Dashboard</a>
+          {% endif %}
+          <a href="{{ url_for('logout') }}" class="hover:underline">Logout</a>
+        {% else %}
+          <a href="{{ url_for('login') }}" class="hover:underline">Login</a>
+          <a href="{{ url_for('register') }}" class="hover:underline">Register</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="space-y-2 mb-4">
+          {% for category, message in messages %}
+            <div class="p-3 rounded text-sm {% if category == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
